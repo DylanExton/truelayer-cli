@@ -55,6 +55,14 @@ impl Runner {
                     }
                 };
 
+            let typ = webhook_message.typ.clone();
+            let event_id = webhook_message.event_id.clone();
+            let resource_id = webhook_message
+                .payment_id
+                .clone()
+                .or_else(|| webhook_message.payout_id.clone())
+                .unwrap_or_else(|| "-".to_string());
+
             let mut builder = reqwest::Client::new()
                 .post(&self.addr)
                 .body(wh.body.clone())
@@ -74,11 +82,11 @@ impl Runner {
                         println!(
                             "{} {}, {} {}, {} {}, => {}, {}",
                             "Type: ",
-                            webhook_message.typ.cyan(),
+                            typ.cyan(),
                             "Event id:",
-                            webhook_message.event_id.cyan(),
-                            "Payment id:",
-                            webhook_message.payment_id.cyan(),
+                            event_id.cyan(),
+                            "Resource id:",
+                            resource_id.cyan(),
                             self.addr.cyan(),
                             "SUCCESS".green()
                         );
@@ -86,11 +94,11 @@ impl Runner {
                         println!(
                             "{} {}, {} {}, {} {}, => {}, {}, {} {}",
                             "Type: ",
-                            webhook_message.typ.cyan(),
+                            typ.cyan(),
                             "Event id:",
-                            webhook_message.event_id.cyan(),
-                            "Payment id:",
-                            webhook_message.payment_id.cyan(),
+                            event_id.cyan(),
+                            "Resource id:",
+                            resource_id.cyan(),
                             self.addr.cyan(),
                             "FAILURE".red(),
                             "status:",
@@ -102,11 +110,11 @@ impl Runner {
                     println!(
                         "{} {}, {} {}, {} {}, => {}, {}, {} {}",
                         "Type: ",
-                        webhook_message.typ.cyan(),
+                        typ.cyan(),
                         "Event id:",
-                        webhook_message.event_id.cyan(),
-                        "Payment id:",
-                        webhook_message.payment_id.cyan(),
+                        event_id.cyan(),
+                        "Resource id:",
+                        resource_id.cyan(),
                         self.addr.cyan(),
                         "FAILURE".red(),
                         "error:",
