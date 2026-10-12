@@ -32,6 +32,7 @@ pub async fn create_external_account_payment(
                 phone: None,
             },
             metadata: None,
+            sub_merchants: None,
         })
         .await?;
     Ok(resp.id)

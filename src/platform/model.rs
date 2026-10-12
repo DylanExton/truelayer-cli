@@ -15,7 +15,10 @@ pub struct PullResponse {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct WebhookMessage {
     pub event_id: String,
-    pub payment_id: String,
+    #[serde(default)]
+    pub payment_id: Option<String>,
+    #[serde(default)]
+    pub payout_id: Option<String>,
     #[serde(rename = "type")]
     pub typ: String,
 }
